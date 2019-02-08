@@ -1,0 +1,60 @@
+---
+title: "R-Data_Visualization-IE7275"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+## GitHub Documents
+
+This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+
+## Including Code
+
+You can include R code in the document as follows:
+
+```{r matrix plot , echo=True}
+forestfires.df <- read.csv("C:\\Users\\arjun\\OneDrive - Northeastern University\\data mining\\forestfires.csv")
+par(mfrow = c(2,2))
+plot(forestfires.df$temp,forestfires.df$area,main = "Scatterplot of Temp Vs Area", xlab = "Temp", ylab = "Area")
+plot(forestfires.df$month,forestfires.df$area,main ="Scatterplot of Month Vs Area", xlab = "Month", ylab = "Area")
+plot(forestfires.df$DC,forestfires.df$area,main = "Scatterplot of DC vs Area", xlab = "DC", ylab = "Area")
+plot(forestfires.df$RH,forestfires.df$area,main = "Scatterplot of RH vs Area",
+     xlab = "RH", ylab = "Area")
+```
+```{r histogram}
+library("dplyr")
+library("ggplot2")
+forestfires.df$wind <- as.numeric(forestfires.df$wind)
+month.data <- summarise(group_by(forestfires.df,month),windsum = sum(wind))
+month.data$num <- c(4,8,12,2,1,7,6,3,5,11,10,9)
+month.sorted <- arrange(month.data,num)
+#month_sorted <- arrange(month.data ,(month))
+#ggplot(month.sorted,aes(x = num,y=windsum))+geom_bar(stat="identity")+geom_line(data=month.sorted, aes(x=num, y=windsum), colour="blue")
+hist(month.sorted$windsum,freq = FALSE, breaks = 12,col ="light blue", main = "Histogram plot", xlab = "windspeed")
+rug(jitter(month.sorted$windsum))
+lines(density(month.sorted$windsum),col = "red" , lwd = 3)
+box()
+
+```
+
+```{r}
+summary(month.sorted$windsum)
+```
+
+```{r}
+#d <- density(forestfires.df$month)
+#plot(d)
+
+```
+
+```{r}
+pairs(~temp + RH + DC + DMC, data = forestfires.df,  main = "scatter plot")
+
+```
+```{r}
+#boxplot(forestfires.df$wind , forestfires.df)
+
+```
